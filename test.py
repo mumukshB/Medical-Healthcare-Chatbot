@@ -17,7 +17,9 @@ user =  "USER: {0}"
 
 intents = {
 	'hi' : ['hello','hey','hi!','hi'],
-	'bye' : ['goodbye','buhbye','bye']
+	'bye' : ['goodbye','buhbye','bye'],
+	'depression' : ['depressed','sad','worried','despair','misery'],
+	'anxiety' : ['anxiety','anxious','nervous','stress','strain','tension','discomfort','tensed']
 }
 
 responses = {
@@ -62,6 +64,28 @@ def sentiment_analysis(message,vectorizer,forest):
 	return result
 
 
+def depression(name):
+	time.sleep(0.8)
+	print(bot.format('Gosh, that is tough'))
+	time.sleep(0.8)
+	print(bot.format('I am sorry to hear that,'),name)
+	time.sleep(0.8)
+	print(bot.format('Here is a thought that might motivate you!'))
+	time.sleep(0.8)
+	print(bot.format('There you go...let it all slide out.Unhappiness cannot stick in a person\'s soul when it\'s slick with tear.'))
+	#time.sleep(0.8)
+
+def anxiety(name):
+	time.sleep(0.8)
+	print(bot.format('Gosh, that is tough'))
+	time.sleep(0.8)
+	print(bot.format('I am sorry to hear that,'),name)
+	time.sleep(0.8)
+	print(bot.format('Here is a thought that might motivate you!'))
+	time.sleep(0.8)
+	print(bot.format('Take a deep breath, listen to your thoughts, try to figure them out. Then take things one day at a time.'))
+
+
 def greet(vectorizer,forest):
 	while True:
 		print(bot.format('Hello, i am a medical healthcare chatbot!'))
@@ -73,17 +97,23 @@ def greet(vectorizer,forest):
 		print(bot.format("Nice to meet you,"),name+"!")
 		time.sleep(0.8)
 		print(bot.format("How are you feeling today"),name+"?")
-		message = input()
-		sentiment = sentiment_analysis(message,vectorizer,forest)
-		if sentiment[0]==1:
+		message = input().lower()
+		#sentiment = sentiment_analysis(message,vectorizer,forest)
+		sentiment = (1,1)
+		m_intent = intent(message)
+		if sentiment[0]==1 and m_intent=='default':
 			print(bot.format("That's awesome! You are showing improvement!"))
 		else:
-			print(bot.format('I feel sorry for that!',name))
 			time.sleep(0.8)
+			if(m_intent == 'depression'):
+				depression(name)
+			else:
+				anxiety(name)
+			time.sleep(1)
 			print(bot.format('I have got great tools for people dealing with stress,wanna give it a go,Yes/No?'))
 			time.sleep(0.8)
 			message = input().lower()
-			sentiment = sentiment_analysis(message,vectorizer,forest)
+			#sentiment = sentiment_analysis(message,vectorizer,forest)
 			if  message == 'yes':
 				print(bot.format("Great! Thanks for trusting me",name))
 				time.sleep(0.8)
@@ -140,7 +170,7 @@ def score():
 	sc = 0
 	for k in dictionary.keys():
 		sc += dictionary[k]*s[k]
-	print(sc)
+	print("Your mental assessmant score is "+sc)
 
 
 def quiz():
